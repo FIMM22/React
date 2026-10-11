@@ -1,23 +1,32 @@
-import './App.css'
-import Header from './components/Header'
-import TaskSummary from './components/TaskSummary'
-import TaskList from './components/TaskList'
-import ActionButton from './components/ActionButton'
+import { useState } from 'react';
+import './App.css';
+import Header from './components/Header';
+import TaskSummary from './components/TaskSummary';
+import TaskList from './components/TaskList';
+import ActionButton from './components/ActionButton';
 
-function App() {
-  function reviewTasks() {
-    alert('Tienes 3 tareas pendientes por revisar')
-  }
+const App = () => {
+  const [tareas, setTareas] = useState([
+    {id:1, titulo: "Aprender que es React", completada: false},
+    {id: 2, titulo: "Crear proyecto con Vite", completada: true},
+    {id: 3, titulo: "Practicar JSX", completada: false},
+  ]);
+  //Recibe el id de la tarea a completar
+  const completarTarea = (id) => {
+    setTareas(
+      tareas.map((tarea) =>
+        tarea.id === id
+          ? {...tarea, completada: true }
+          : tarea
+      )
+    );
+  };
   return (
-    <main className="app-container">
-      <Header
-        title="TaskCampus"
-        description="Gestor de tareas académicas"
-      />
-      <TaskSummary total={3} />
-      <TaskList title="Listado de tareas de hoy" />
-      <ActionButton onReview={reviewTasks} />
-    </main>
-  )
-}
+    <div className='app-containter'>
+      <Header title = "TaskCampus" description="Gestiona tus tareas academicas"/>
+      <TaskSummary total={tareas.length}/>
+      <TaskList tareas= {tareas} onCompletar={completarTarea}/>
+    </div>
+  );
+};
 export default App

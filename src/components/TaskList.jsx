@@ -1,32 +1,35 @@
-const tasks = ['Aprender qué es React', 'Crear proyecto con Vite', 'Practicar JSX']
-function showTask(taskName) {
-    alert(`Has seleccionado la tarea: ${taskName}`)
-  }
-function TaskList() {
-    return (
-    <section className="card">
-      <h2 className="section-title">Listado de tareas</h2>
-      <ul className="task-list">
-          <li className="task-item">
-            {tasks[0]} 
-            <button onClick={() => showTask(tasks[0])} className="task-button">
-                Seleccionar
-            </button>          
+const TaskList = ({ tareas, onCompletar }) => {
+  return (
+    <div className="card">
+      <h2 className="section-title">Lista de Tareas</h2>
+      <ul style={{ listStyle: "none", padding: 0 }}>
+        {tareas.map((tarea) => (
+          <li
+            key={tarea.id}
+            className="task-item"
+            >
+            {/* Título tachado si está completada */}
+            <span
+              style={{
+                textDecoration: tarea.completada ? "line-through" : "none",
+                color: tarea.completada ? "#94a3b8" : "inherit",
+              }}
+            >
+              {tarea.titulo}
+            </span>
+            {/* Botón solo aparece si NO está completada */}
+            {tarea.completada ? (
+              <span>✅</span>
+            ) : (
+              <button className="task-button" onClick={() => onCompletar(tarea.id)}>
+                Completar
+              </button>
+            )}
           </li>
-          <li className="task-item">
-            {tasks[1]} 
-            <button onClick={() => showTask(tasks[1])} className="task-button">
-                Seleccionar
-            </button>          
-          </li>
-          <li className="task-item">
-            {tasks[2]} 
-            <button onClick={() => showTask(tasks[2])} className="task-button">
-                Seleccionar
-            </button>          
-          </li>          
+        ))}
       </ul>
-    </section>
-  )
-}
-export default TaskList
+    </div>
+  );
+};
+
+export default TaskList;
