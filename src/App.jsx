@@ -5,6 +5,8 @@ import Header from './components/Header';
 import TaskSummary from './components/TaskSummary';
 import TaskList from './components/TaskList';
 import ActionButton from './components/ActionButton';
+import Card from './components/Card';
+import Modal from './components/Modal';
 
 const App = () => {
   const [tareas, setTareas] = useState(() => {
@@ -12,13 +14,20 @@ const App = () => {
     return guardadas ? JSON.parse(guardadas) : [];
   });
 
+  const [tareaAEliminar, setTareaAEliminar] = useState(null);
+
+  const handleEliminar = () => {
+    setTareas((prev) => prev.filter((t) => t.id !== tareaAEliminar));
+    setTareaAEliminar(null);
+  };
+
   const [cargando, setCargando] = useState(false);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const hayDatosLocales = localStorage.getItem("Taskcampus-tareas");
 
-    if (hayDatosLocales) return;  
+    if (hayDatosLocales) return;
     const cargarDesdeAPI = async () => {
       setCargando(true);
       try {
@@ -94,9 +103,25 @@ const App = () => {
   return (
     <div className="app-container">
       <Header title="TaskCampus" description="Gestiona tus tareas académicas" />
-      <TaskSummary total={tareas.length} />
+      <Card titulo="Resumen de tareas">
+        <TaskSummary total={tareas.length} />
+      </Card>
       <TaskForm onAgregar={agregarTarea} />
-      <TaskList tareas={tareas} onCompletar={completarTarea} cargando={cargando} error={error} />
+      <Card titulo="Mis tareas">
+        <TaskList
+          tareas={tareas}
+          onCompletar={completarTarea}
+          onEliminar={setTareaAEliminar}
+          cargando={cargando}
+          error={error}
+        />
+      </Card>
+      <Modal
+        visible={tareaAEliminar !== null}
+        mensaje="¿Seguro que deseas eliminar esta tarea?"
+        onConfirmar={handleEliminar}
+        onCancelar={() => setTareaAEliminar(null)}
+      />
     </div>
   );
 };
