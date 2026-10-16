@@ -1,37 +1,38 @@
-import { useState } from "react";
 import Button from "./Button";
 import Badge from "./Badge";
 
-const TaskList = ({ tareas, onCompletar, onEliminar }) => {
-  const [filtro, setFiltro] = useState("todas");
-
-  // Filtra según el botón activo
-  const tareasFiltradas = tareas.filter((t) => {
-    if (filtro === "pendientes") return !t.completada;
-    if (filtro === "completadas") return t.completada;
-    return true;
-  });
-
+const TaskList = ({ tareas, filtro, onCambiarFiltro, onToggle, onEliminar }) => {
   return (
     <div>
-      {/* Botones de filtro */}
       <div style={{ display: "flex", gap: "8px", marginBottom: "12px" }}>
-        <Button label="📋 Todas" onClick={() => setFiltro("todas")} variant="primary" />
-        <Button label="⏳ Pendientes" onClick={() => setFiltro("pendientes")} variant="primary" />
-        <Button label="✅ Completadas" onClick={() => setFiltro("completadas")} variant="primary" />
+        <Button
+          label="📋 Todas"
+          onClick={() => onCambiarFiltro("todas")}
+          variant={filtro === "todas" ? "primary" : "secondary"}
+        />
+        <Button
+          label="⏳ Pendientes"
+          onClick={() => onCambiarFiltro("pendientes")}
+          variant={filtro === "pendientes" ? "primary" : "secondary"}
+        />
+        <Button
+          label="✅ Completadas"
+          onClick={() => onCambiarFiltro("completadas")}
+          variant={filtro === "completadas" ? "primary" : "secondary"}
+        />
       </div>
 
-      <ul style={{ listStyle: "none", padding: 0 }}>
-        {tareasFiltradas.map((tarea) => (
-          <li
-            key={tarea.id}
-            className="task-item"
-            style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-              <Badge texto={tarea.completada ? "completada" : "pendiente"} />
+      {tareas.length === 0 && (
+        <p style={{ textAlign: "center", color: "#94a3b8" }}>
+          No hay tareas en esta categoría 📭
+        </p>
+      )}
 
-              {/* Título tachado si está completada */}
+      <ul className="task-list">
+        {tareas.map((tarea) => (
+          <li key={tarea.id} className="task-item">
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", flex: 1 }}>
+              <Badge texto={tarea.completada ? "completada" : "pendiente"} />
               <span
                 style={{
                   textDecoration: tarea.completada ? "line-through" : "none",
@@ -41,26 +42,21 @@ const TaskList = ({ tareas, onCompletar, onEliminar }) => {
                 {tarea.titulo}
               </span>
             </div>
-
-            <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-              {/* Ícono si completada, botón si pendiente */}
-              {tarea.completada ? (
-                <span>✅</span>
-              ) : (
-                <Button label="Completar" onClick={() => onCompletar(tarea.id)} variant="primary" />
-              )}
-
-              {/* Este botón activa el modal */}
-              <Button label="Eliminar" onClick={() => onEliminar(tarea.id)} variant="danger" />
+            <div style={{ display: "flex", gap: "8px", flexShrink: 0 }}>
+              <Button
+                label={tarea.completada ? "Desmarcar" : "Completar"}
+                onClick={() => onToggle(tarea.id, tarea.completada)}
+                variant={tarea.completada ? "success" : "primary"}
+              />
+              <Button
+                label="Eliminar"
+                onClick={() => onEliminar(tarea.id)}
+                variant="danger"
+              />
             </div>
           </li>
         ))}
       </ul>
-
-      {/* Mensaje si no hay tareas en el filtro activo */}
-      {tareasFiltradas.length === 0 && (
-        <p>No hay tareas en esta categoría.</p>
-      )}
     </div>
   );
 };

@@ -107,7 +107,6 @@ body {
   border-color: #2563eb;
 }
 
-/* Estilos para Button */
 .btn { padding: 8px 16px; border: none; border-radius: 6px; cursor: pointer;
   font-size: 0.875rem; font-weight: 600; transition: background-color 0.2s; }
 .btn-primary { background-color: #1d4ed8; color: #fff; }
@@ -116,9 +115,10 @@ body {
 .btn-danger:hover { background-color: #b91c1c; }
 .btn-secondary { background-color: #e2e8f0; color: #0f172a; }
 .btn-secondary:hover { background-color: #cbd5e1; }
+.btn-success { background-color: #198754; color: #ffffff; }
+.btn-success:hover { background-color: #146c43; }
 .btn:disabled { opacity: 0.5; cursor: not-allowed; }
 
-/* Estilos para Modal */
 .modal-overlay {
   position: fixed;
   top: 0;
@@ -145,4 +145,56 @@ body {
   gap: 12px;
   justify-content: center;
   margin-top: 20px;
+}
+
+.estado-carga {
+  text-align: center;
+  color: #1d4ed8;
+  font-weight: 600;
+}
+.estado-error {
+  text-align: center;
+  color: #dc2626;
+  font-weight: 600;
+}
+
+.summary-grid {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.summary-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.summary-numero {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #1d4ed8;
+}
+.summary-label {
+  font-size: 0.8rem;
+  color: #64748b;
+}
+.task-form {
+  display: flex;
+  gap: 10px;
+}
+.task-input {
+  flex: 1;
+  padding: 8px 14px;
+  border: 1.5px solid #cbd5e1;
+  border-radius: 6px;
+  font-size: 0.95rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+.task-input:focus {
+  border-color: #2563eb;
+}
+.form-error {
+  color: #dc2626;
+  font-size: 0.85rem;
+  margin-top: 6px;
 }
